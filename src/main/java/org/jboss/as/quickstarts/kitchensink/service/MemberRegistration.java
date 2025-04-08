@@ -16,30 +16,46 @@
  */
 package org.jboss.as.quickstarts.kitchensink.service;
 
+import org.jboss.as.quickstarts.kitchensink.event.MemberCreatedEvent;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 
-import jakarta.ejb.Stateless;
-import jakarta.enterprise.event.Event;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import java.util.logging.Logger;
+import java.util.List;
+import org.jboss.as.quickstarts.kitchensink.repository.MemberRepository;
+import org.jboss.as.quickstarts.kitchensink.util.MemberListHolder;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
-@Stateless
+@Service
 public class MemberRegistration {
 
-    @Inject
-    private Logger log;
+    private final MemberRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Inject
-    private EntityManager em;
+    public MemberRegistration(MemberRepository repository, MemberListHolder memberListHolder, ApplicationEventPublisher eventPublisher) {
+        this.repository = repository;
+        this.eventPublisher = eventPublisher;
+    }
 
-    @Inject
-    private Event<Member> memberEventSrc;
+    public List<Member> getAllMembers() {
+        return repository.findAll();
+    }
 
-    public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
-        em.persist(member);
-        memberEventSrc.fire(member);
+    @Transactional
+    public Member registerMember(Member member) {
+        // Business rule validation
+        if (repository.existsByEmail(member.email())) {
+            throw new IllegalStateException("Email already registered");
+        }
+
+        // Phone number uniqueness check
+        if (repository.existsByPhoneNumber(member.phoneNumber())) {
+            throw new IllegalStateException("Phone number already in use");
+        }
+
+        Member savedMember = repository.save(member);
+        eventPublisher.publishEvent(new MemberCreatedEvent(savedMember));
+        return savedMember;
     }
 }
