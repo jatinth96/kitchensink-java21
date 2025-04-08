@@ -1,0 +1,71 @@
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --error-color: #e74c3c;
+}
+
+/* Validation States */
+.has-error .form-control {
+    border-color: #e74c3c;
+}
+
+.is-invalid {
+    border-color: #e74c3c !important;
+}
+
+.invalid-feedback {
+    color: #e74c3c;
+    display: none;
+    font-size: 0.875em;
+}
+
+.is-invalid ~ .invalid-feedback,
+.has-error .invalid-feedback {
+    display: block;
+}
+
+/* Keep original panel styles */
+.ui-panel {
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.ui-panel-titlebar {
+    padding: 10px 15px;
+    background: #2c3e50;
+    color: white;
+}
+/* Add these new styles to support Thymeleaf forms */
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: none;
+  color: #dc3545;
+  font-size: 0.875em;
+}
+
+.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+/* Update existing styles for Bootstrap compatibility */
+.ui-panel {
+  /* Change PrimeFaces panel to Bootstrap card */
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.ui-panel .ui-panel-titlebar {
+  /* Match Bootstrap card header */
+  background: #343a40 !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.75rem 1.25rem !important;
+}
+
+/* Keep all original styles but remove PrimeFaces-specific classes */

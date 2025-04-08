@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member Registration</title>
+    <link th:href="@{/css/screen.css}" rel="stylesheet">
+    <style>
+        .has-error input { border-color: red; }
+        .invalid-feedback { color: red; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Success Message -->
+    <div th:if="${param.success}" class="alert alert-success">
+        Member registered successfully!
+    </div>
+
+    <h2>Register Member</h2>
+
+    <!-- Form Binding to "member" -->
+    <form th:object="${member}" th:action="@{/members}" method="post">
+
+        <!-- Name -->
+        <div th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" id="name" required minlength="2" maxlength="50"
+                   class="form-control"
+                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
+        </div>
+
+        <!-- Email -->
+        <div th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+            <label for="email">Email</label>
+            <input type="email" th:field="*{email}" id="email" required
+                   class="form-control"
+                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                   title="Please enter a valid email address"
+                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
+        </div>
+
+        <!-- Phone Number -->
+        <div th:classappend="${#fields.hasErrors('phoneNumber')} ? 'has-error'">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" th:field="*{phoneNumber}" id="phoneNumber" required maxlength="10"
+                   pattern="^[6-9]\d{9}$"
+                   title="Enter a valid 10-digit Indian mobile number starting with 6-9"
+                   class="form-control"
+                   th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'">
+            <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></div>
+        </div>
+
+        <!-- Submit -->
+        <div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- Member List -->
+    <h2>All Members</h2>
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th><th>Email</th><th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${members}">
+            <td th:text="${m.name}"></td>
+            <td th:text="${m.email}"></td>
+            <td th:text="${m.phoneNumber}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

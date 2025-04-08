@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kitchensink</title>
+    <link th:href="@{/css/screen.css}" rel="stylesheet">
+</head>
+<body class="page-body">
+<div class="container">
+    <h1>Welcome to Kitchensink</h1>
+    <a th:href="@{/members}" class="btn">View Members</a>
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
+</body>
+</html>
