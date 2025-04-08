@@ -45,12 +45,12 @@ public class MemberRegistration {
     @Transactional
     public Member registerMember(Member member) {
         // Business rule validation
-        if (repository.existsByEmail(member.email())) {
+        if (repository.existsByEmail(member.getEmail())) {
             throw new IllegalStateException("Email already registered");
         }
 
         // Phone number uniqueness check
-        if (repository.existsByPhoneNumber(member.phoneNumber())) {
+        if (repository.existsByPhoneNumber(member.getPhoneNumber())) {
             throw new IllegalStateException("Phone number already in use");
         }
 

@@ -16,6 +16,9 @@
   </div>
   <button type="submit">Login</button>
   <a th:href="@{/register}">Create an account</a>
+  <div th:if="${param.error}" style="color: red" class="alert alert-danger">
+    Invalid username or password.
+  </div>
 </form>
 </body>
 </html>

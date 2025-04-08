@@ -23,19 +23,62 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "members")
-public record Member(
-        @Id String id,
+public class Member{
+        @Id String id;
 
         @Field(name = "name")
         @NotBlank(message = "Name cannot be empty")
         @Size(min = 2, max = 50, message = "Name must be 2-50 characters")
-        String name,
+        String name;
 
         @Email(message = "Invalid email format")
         @NotBlank(message = "Email cannot be empty")
-        @Field(name = "email") String email,
+        @Field(name = "email")
+        String email;
 
-        @Pattern(regexp = "^\\d{10}$", message = "Phone must be 10 digits")
+        @Pattern(regexp = "^[6-9]\\d{9}$", message = "Phone must be 10 digits")
         @Field(name = "phone_number")
-        String phoneNumber
-) {}
+        String phoneNumber;
+
+        public String getName() {
+                return name;
+        }
+
+        public void setName(String name) {
+                this.name = name;
+        }
+
+        public String getEmail() {
+                return email;
+        }
+
+        public void setEmail(String email) {
+                this.email = email;
+        }
+
+        public String getPhoneNumber() {
+                return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+                this.phoneNumber = phoneNumber;
+        }
+
+        public String getId() {
+                return id;
+        }
+
+        public void setId(String id) {
+                this.id = id;
+        }
+
+        public Member(String id, String name, String email, String phoneNumber) {
+                this.id = id;
+                this.name = name;
+                this.email = email;
+                this.phoneNumber = phoneNumber;
+        }
+
+        public Member() {
+        }
+}

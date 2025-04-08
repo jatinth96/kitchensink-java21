@@ -21,7 +21,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
             // Redirect to register page if user doesn't exist
             getRedirectStrategy().sendRedirect(request, response, "/register");
         } else {
-            super.onAuthenticationFailure(request, response, exception); // default behavior
+            getRedirectStrategy().sendRedirect(request, response, "/login?error=true");
         }
     }
 }

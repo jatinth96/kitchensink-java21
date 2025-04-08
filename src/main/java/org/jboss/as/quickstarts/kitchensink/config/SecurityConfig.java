@@ -28,12 +28,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/login", "/register", "/css/**").permitAll() // ✅ allow public access
-                        .anyRequest().authenticated() // 🔒 protect everything else
+                        .requestMatchers("/", "/index", "/login", "/register", "/css/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // ✅ your custom login page
-                        .loginProcessingUrl("/login") // ✅ form POST submits here
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/members", true)
                         .failureHandler(customAuthFailureHandler)
                         .permitAll()
@@ -42,7 +42,6 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
-//                .csrf().disable(); // ❗only if you're having issues with CSRF while testing frontend
 
         return http.build();
     }
